@@ -112,7 +112,7 @@ export function Hero() {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => scrollTo("cta")}
+            onClick={() => scrollTo("contact")}
             className="px-7 py-3.5 rounded-full bg-gray-950 text-white font-semibold text-sm hover:bg-gray-800 transition-colors shadow-lg"
           >
             Start Your Project

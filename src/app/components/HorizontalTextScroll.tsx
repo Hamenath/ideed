@@ -22,8 +22,7 @@ export function HorizontalTextScroll() {
       if (!track) return;
       
       const getScrollAmount = () => {
-        let scrollWidth = track.scrollWidth;
-        return scrollWidth - window.innerWidth;
+        return (texts.length - 1) * window.innerWidth;
       };
 
       // The horizontal movement of the entire track

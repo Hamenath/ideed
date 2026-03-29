@@ -100,7 +100,7 @@ export function Navbar() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => scrollTo("cta")}
+            onClick={() => scrollTo("contact")}
             className="px-6 py-2.5 rounded-full bg-blue-600/90 backdrop-blur-sm text-white text-sm font-semibold hover:bg-blue-600 transition-colors shadow-[0_4px_14px_rgba(37,99,235,0.3)] border border-blue-400/30"
           >
             Start Your Project
@@ -141,7 +141,7 @@ export function Navbar() {
               ))}
               <div className="pt-2 pb-1 px-1">
                 <button
-                  onClick={() => scrollTo("cta")}
+                  onClick={() => scrollTo("contact")}
                   className="w-full py-4 rounded-2xl bg-blue-600/90 text-white text-base font-bold text-center shadow-[0_4px_14px_rgba(37,99,235,0.3)] border border-blue-400/30 backdrop-blur-md"
                 >
                   Start Your Project

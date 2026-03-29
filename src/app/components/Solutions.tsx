@@ -82,8 +82,7 @@ export function Solutions() {
           x: "150%", 
           rotation: 15, 
           opacity: 0, 
-          scale: 0.8,
-          filter: "blur(20px)"
+          scale: 0.8
         });
 
         // Move the new card in
@@ -93,7 +92,6 @@ export function Solutions() {
           y: index * 6, // layer down slightly
           opacity: 1,
           scale: 1,
-          filter: "blur(0px)",
           ease: "back.out(1)", // A snappier entrance ease!
         });
         

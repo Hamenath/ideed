@@ -9,7 +9,6 @@ import { Portfolio } from "./components/Portfolio";
 import { DigitalProductsGlobe } from "./components/DigitalProductsGlobe";
 import { Stats } from "./components/Stats";
 import { FAQ } from "./components/FAQ";
-import { CTA } from "./components/CTA";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 
@@ -61,6 +60,21 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      
+      {/* Scroll to top button */}
+      <button
+        onClick={() => {
+          const el = document.getElementById("home");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+          else window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        className="fixed bottom-6 right-6 z-50 p-3 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-gray-200 text-gray-500 hover:text-blue-600 hover:bg-white transition-all transform hover:scale-105 active:scale-95"
+        aria-label="Scroll to top"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m18 15-6-6-6 6" />
+        </svg>
+      </button>
     </div>
   );
 }

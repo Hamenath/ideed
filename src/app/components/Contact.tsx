@@ -1,21 +1,11 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
-import { Send, Mail, MapPin, Phone } from "lucide-react";
-
-const projectTypes = [
-  "Web Development",
-  "Mobile App",
-  "UI/UX Design",
-  "Digital Marketing",
-  "IoT Solution",
-  "E-commerce",
-  "Custom Request",
-];
+import { Send, Mail, MapPin, Phone, Clock } from "lucide-react";
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-  const [form, setForm] = useState({ name: "", email: "", projectType: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,34 +13,48 @@ export function Contact() {
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setForm({ name: "", email: "", projectType: "", message: "" });
+      setForm({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
     }, 3500);
   };
 
+  const projectTypes = [
+    "Website Development",
+    "Mobile App Development",
+    "UI/UX Design",
+    "Logo & Branding",
+    "Digital Marketing",
+    "IoT Solutions",
+    "Custom Software",
+    "Maintenance & Support",
+    "Other"
+  ];
+
   return (
-    <section id="contact" ref={sectionRef} className="py-28 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Left */}
+    <section id="contact" ref={sectionRef} className="py-16 md:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left: Info */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-600 to-violet-500" />
+              <div className="w-12 h-1 bg-blue-600 rounded-full" />
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6 }}
-                className="text-4xl md:text-5xl font-black text-gray-950"
-                style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-950 leading-tight"
+                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
               >
-                Let's Talk
+                Let’s Turn Your Idea Into a Real Product
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-gray-400 leading-relaxed"
+                className="text-gray-500 text-base leading-relaxed max-w-lg"
               >
-                Ready to bring your vision to life? Fill out the form and we'll respond within 24 hours.
+                Have an idea, project, or business that needs a website, app, design, IoT system, or digital solution?
+                We help startups, businesses, and individuals turn ideas into real digital products.
+                Contact iDEED and let’s start building something amazing.
               </motion.p>
             </div>
 
@@ -58,33 +62,26 @@ export function Contact() {
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-4"
+              className="p-8 rounded-[2rem] bg-[#F8FAFC] border border-gray-100 space-y-6"
             >
-              {[
-                { icon: Mail, label: "hello@ideed.io" },
-                { icon: Phone, label: "+1 (555) 123-4567" },
-                { icon: MapPin, label: "San Francisco, CA" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-gray-500 text-sm">
-                  <item.icon size={16} className="text-gray-400" strokeWidth={1.5} />
-                  {item.label}
-                </div>
-              ))}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3"
-            >
-              <p className="font-semibold text-gray-900 text-sm" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-                Free Initial Consultation
-              </p>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Every project starts with a complimentary discovery call where we understand your vision,
-                technical needs, and set realistic expectations.
-              </p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Contact Information</h3>
+              <div className="space-y-5">
+                {[
+                  { icon: Mail, label: "Email", value: "ideed.support@gmail.com" },
+                  { icon: Phone, label: "Phone", value: "+91 8778 70 70 86" },
+                  { icon: MapPin, label: "Location", value: "Madurai, Tamil Nadu, India" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-gray-100 flex-shrink-0">
+                      <item.icon size={18} className="text-blue-600" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-gray-400 tracking-wider mb-0.5">{item.label}</p>
+                      <p className="text-gray-900 font-medium">{item.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
 
@@ -93,79 +90,96 @@ export function Contact() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
+            className="p-6 md:p-8 rounded-[2.5rem] bg-white border border-gray-100 shadow-2xl shadow-gray-200/50"
           >
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="h-full min-h-[400px] flex flex-col items-center justify-center text-center space-y-4 rounded-2xl bg-gray-50 border border-gray-100 p-12"
+                className="h-full min-h-[350px] flex flex-col items-center justify-center text-center space-y-4"
               >
-                <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center">
-                  <Send size={22} className="text-white" />
+                <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mb-2">
+                  <Send size={24} className="text-green-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-                  Message Sent!
-                </h3>
-                <p className="text-gray-400 text-sm max-w-xs">
-                  We've received your message and will be in touch within 24 hours.
+                <h3 className="text-2xl font-bold text-gray-900">Message Sent Successfully!</h3>
+                <p className="text-gray-500 max-w-xs text-sm">
+                  We've received your request and will properly review your project. We'll be in touch soon.
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</label>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Full Name *</label>
                     <input
                       type="text"
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</label>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Email Address *</label>
                     <input
                       type="email"
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder="you@company.com"
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                      placeholder="john@example.com"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Project Type</label>
-                  <div className="flex flex-wrap gap-2">
-                    {projectTypes.map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => setForm({ ...form, projectType: type })}
-                        className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
-                          form.projectType === type
-                            ? "border-blue-500 bg-blue-50 text-blue-700"
-                            : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    ))}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Phone Number *</label>
+                    <input
+                      type="tel"
+                      required
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                      placeholder="+91 XXXXX XXXXX"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Budget (Optional)</label>
+                    <input
+                      type="text"
+                      value={form.budget}
+                      onChange={(e) => setForm({ ...form, budget: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                      placeholder="$5k - $10k"
+                    />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Message</label>
+                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Project Type *</label>
+                  <select
+                    required
+                    value={form.projectType}
+                    onChange={(e) => setForm({ ...form, projectType: e.target.value })}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer appearance-none"
+                  >
+                    {projectTypes.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Project Description *</label>
                   <textarea
                     required
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="Tell us about your project, timeline, and budget..."
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all resize-none"
+                    rows={3}
+                    className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
+                    placeholder="Tell us about your project goals, timeline, and requirements..."
                   />
                 </div>
 
@@ -173,10 +187,9 @@ export function Contact() {
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-gray-950 text-white font-semibold text-sm hover:bg-gray-800 transition-colors"
+                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30 mt-2"
                 >
-                  <Send size={15} />
-                  Send Message
+                  Submit Form
                 </motion.button>
               </form>
             )}
