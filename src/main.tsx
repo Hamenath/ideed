@@ -9,6 +9,9 @@ import { AdminClients } from "./app/pages/AdminClients.tsx";
 import { AdminFiles } from "./app/pages/AdminFiles.tsx";
 import { AdminSettings } from "./app/pages/AdminSettings.tsx";
 import "./styles/index.css";
+import emailjs from "@emailjs/browser";
+
+emailjs.init("IhfZK-dOg8HkPlms_");
 
 const root = createRoot(document.getElementById("root")!);
 

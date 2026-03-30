@@ -5,25 +5,6 @@ import { db } from "../lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import emailjs from "@emailjs/browser";
 
-const sendEmail = async (formData: any) => {
-  try {
-    await emailjs.send(
-      "service_kn6z198",
-      "template_ua382qf",
-      {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        service: formData.projectType,
-        message: formData.message,
-      },
-      "IhfZK-dOg8HkPlms_"
-    );
-  } catch (error) {
-    console.error("Email error:", error);
-  }
-};
-
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
@@ -36,28 +17,38 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      await sendEmail(form);
-      
-      await addDoc(collection(db, "contacts"), {
+      const formData = {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        projectType: form.projectType,
-        budget: form.budget,
+        service: form.projectType,
         message: form.message,
+      };
+
+      // 1. Send Email to ideed.support@gmail.com via EmailJS
+      await emailjs.send(
+        "service_kn6z198",
+        "template_ua382qf",
+        formData,
+        "IhfZK-dOg8HkPlms_"
+      );
+
+      // 2. Save lead to Firestore
+      await addDoc(collection(db, "contacts"), {
+        ...formData,
+        projectType: form.projectType, // Keep original field name for compatibility
+        budget: form.budget,
         status: "New",
         createdAt: serverTimestamp(),
       });
 
-      // Log notification for Admin
+      // 3. Push admin notification
       await addDoc(collection(db, "notifications"), {
         text: `New project inquiry from ${form.name}: ${form.projectType}`,
-        unread: true,
+        read: false,
         createdAt: serverTimestamp(),
-        type: 'contact',
-        emailStatus: 'pending' // For internal tracking
+        type: "contact",
       });
-
 
       alert("Message sent successfully!");
       setSubmitted(true);
@@ -66,8 +57,8 @@ export function Contact() {
         setForm({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
       }, 3500);
     } catch (error) {
-      console.log(error);
-      alert("Error sending message");
+      console.error("Email error:", error);
+      alert("Error sending message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

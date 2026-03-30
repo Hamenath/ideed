@@ -19,4 +19,7 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  // Vite defaults to appType: 'spa' which serves index.html for all unknown routes
 })
+
