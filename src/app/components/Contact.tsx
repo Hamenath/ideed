@@ -23,6 +23,7 @@ export function Contact() {
         projectType: form.projectType,
         budget: form.budget,
         message: form.message,
+        status: "New",
         createdAt: serverTimestamp(),
       });
 
