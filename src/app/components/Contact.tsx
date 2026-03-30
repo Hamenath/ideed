@@ -1,20 +1,43 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
-import { Send, Mail, MapPin, Phone, Clock } from "lucide-react";
+import { Send, Mail, MapPin, Phone } from "lucide-react";
+import { db } from "../lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
   const [form, setForm] = useState({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setForm({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
-    }, 3500);
+    setIsSubmitting(true);
+
+    try {
+      await addDoc(collection(db, "contacts"), {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        projectType: form.projectType,
+        budget: form.budget,
+        message: form.message,
+        createdAt: serverTimestamp(),
+      });
+
+      alert("Message sent successfully!");
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setForm({ name: "", email: "", phone: "", projectType: "Website Development", budget: "", message: "" });
+      }, 3500);
+    } catch (error) {
+      console.log(error);
+      alert("Error sending message");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const projectTypes = [
@@ -185,11 +208,16 @@ export function Contact() {
 
                 <motion.button
                   type="submit"
+                  disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30 mt-2"
+                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 mt-2 disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center min-h-[48px]"
                 >
-                  Submit Form
+                  {isSubmitting ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    "Submit Form"
+                  )}
                 </motion.button>
               </form>
             )}
