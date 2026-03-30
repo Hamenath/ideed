@@ -84,7 +84,7 @@ export function AdminDashboard() {
             return newClicks;
           });
         } else {
-          setDoc(statsRef, { visits: 1250, linkClicks: 840, lastUpdate: serverTimestamp() });
+          setDoc(statsRef, { visits: 0, linkClicks: 0, lastUpdate: serverTimestamp() });
         }
       });
 
@@ -96,6 +96,37 @@ export function AdminDashboard() {
       return unsubStats;
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetAllData = async () => {
+    if (!window.confirm("CRITICAL: This will permanently delete ALL leads, projects, and notifications. Data cannot be recovered. Proceed?")) return;
+    
+    setLoading(true);
+    try {
+      // 1. Delete all leads
+      const leadsSnap = await getDocs(collection(db, "contacts"));
+      for (const d of leadsSnap.docs) await deleteDoc(doc(db, "contacts", d.id));
+
+      // 2. Delete all projects
+      const projectsSnap = await getDocs(collection(db, "projects"));
+      for (const d of projectsSnap.docs) await deleteDoc(doc(db, "projects", d.id));
+
+      // 3. Delete all notifications
+      const notifsSnap = await getDocs(collection(db, "notifications"));
+      for (const d of notifsSnap.docs) await deleteDoc(doc(db, "notifications", d.id));
+
+      // 4. Reset counters
+      const statsRef = doc(db, "stats", "counters");
+      await setDoc(statsRef, { visits: 0, linkClicks: 0, lastUpdate: serverTimestamp() });
+
+      alert("System has been fully reset to zero.");
+      fetchMessages();
+    } catch (err) {
+      console.error("Reset error:", err);
+      alert("Error resetting data.");
     } finally {
       setLoading(false);
     }
@@ -275,6 +306,13 @@ export function AdminDashboard() {
 
               <button onClick={() => signOut(auth)} className="p-2.5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors shadow-sm" title="Log out">
                 <LogOut size={20} />
+              </button>
+
+              <button 
+                onClick={resetAllData}
+                className="hidden xl:flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-lg shadow-red-500/20 transition-all border border-red-500/30"
+              >
+                <Trash2 size={16} /> Reset All
               </button>
             </div>
           </header>

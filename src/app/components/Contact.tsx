@@ -3,6 +3,26 @@ import { motion, useInView } from "motion/react";
 import { Send, Mail, MapPin, Phone } from "lucide-react";
 import { db } from "../lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import emailjs from "@emailjs/browser";
+
+const sendEmail = async (formData: any) => {
+  try {
+    await emailjs.send(
+      "service_kn6z198",
+      "template_ua382qf",
+      {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.projectType,
+        message: formData.message,
+      },
+      "IhfZK-dOg8HkPlms_"
+    );
+  } catch (error) {
+    console.error("Email error:", error);
+  }
+};
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -16,6 +36,8 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
+      await sendEmail(form);
+      
       await addDoc(collection(db, "contacts"), {
         name: form.name,
         email: form.email,
@@ -26,6 +48,16 @@ export function Contact() {
         status: "New",
         createdAt: serverTimestamp(),
       });
+
+      // Log notification for Admin
+      await addDoc(collection(db, "notifications"), {
+        text: `New project inquiry from ${form.name}: ${form.projectType}`,
+        unread: true,
+        createdAt: serverTimestamp(),
+        type: 'contact',
+        emailStatus: 'pending' // For internal tracking
+      });
+
 
       alert("Message sent successfully!");
       setSubmitted(true);
