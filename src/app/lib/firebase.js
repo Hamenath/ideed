@@ -1,19 +1,20 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAmaCGiHIK4qSfWphFJumQFAhQo9VUABYw",
-  authDomain: "ideed-4e093.firebaseapp.com",
-  projectId: "ideed-4e093",
-  storageBucket: "ideed-4e093.firebasestorage.app",
-  messagingSenderId: "961477923001",
-  appId: "1:961477923001:web:8d168f38f429d0dea20b68",
-  measurementId: "G-PNBQY9PW4J"
+  apiKey: "AIzaSyBqH_S1ZclbRTagWi7ERSSpmId0RvcM15A",
+  authDomain: "ideed-709aa.firebaseapp.com",
+  projectId: "ideed-709aa",
+  storageBucket: "ideed-709aa.firebasestorage.app",
+  messagingSenderId: "760698140229",
+  appId: "1:760698140229:web:3a94e09fc3a216476ed52c",
+  measurementId: "G-494X3TT4LB"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
