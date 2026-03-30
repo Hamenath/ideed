@@ -43,10 +43,10 @@ export function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -60, opacity: 0 }}
+      initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl transition-all duration-300 rounded-[2rem] ${
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300 rounded-[2rem] ${
         scrolled 
           ? "bg-white/95 backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-white/50" 
           : "bg-white/20 backdrop-blur-md shadow-sm border border-white/30"

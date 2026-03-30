@@ -240,48 +240,52 @@ export function CinematicHero({
     const isMobile = window.innerWidth < 768;
 
     const ctx = gsap.context(() => {
+      // Set initial states explicitly here so they apply when the component mounts
       gsap.set(".text-track", { autoAlpha: 0, y: 60, scale: 0.85, rotationX: -20 });
-      gsap.set(".text-days", { autoAlpha: 1, clipPath: "inset(0 100% 0 0)" });
-      gsap.set(".main-card", { y: window.innerHeight + 200, autoAlpha: 1 });
+      gsap.set(".text-days", { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" });
+      gsap.set(".main-card", { y: window.innerHeight + 100, autoAlpha: 1, width: isMobile ? "92vw" : "85vw", height: isMobile ? "92vh" : "85vh", borderRadius: isMobile ? "32px" : "40px" });
       gsap.set([".card-left-text", ".card-right-text", ".mockup-scroll-wrapper", ".floating-badge", ".phone-widget"], { autoAlpha: 0 });
-      gsap.set(".cta-wrapper", { autoAlpha: 0, scale: 0.8 });
-
-      const introTl = gsap.timeline({ delay: 0.3 });
-      introTl
-        .to(".text-track", { duration: 1.8, autoAlpha: 1, y: 0, scale: 1, rotationX: 0, ease: "expo.out" })
-        .to(".text-days", { duration: 1.4, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=1.0");
 
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top top",
-          end: "+=2000",
+          start: "top top", // Pin when the section hits the top
+          end: "+=3000", // Lengthened scroll distance for smoother scrub
           pin: true,
-          scrub: 0.5,
+          scrub: 1.5,
           anticipatePin: 1,
         },
       });
 
       scrollTl
-        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, opacity: 0.2, ease: "power2.inOut", duration: 2 }, 0)
-        .to(".main-card", { y: 0, ease: "power3.inOut", duration: 2 }, 0)
-        .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 1.5 })
+        // 1. Fade in the "How We Build" text
+        .to(".text-track", { duration: 1, autoAlpha: 1, y: 0, scale: 1, rotationX: 0, ease: "expo.out" })
+        .to(".text-days", { duration: 1, autoAlpha: 1, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=0.5")
+        
+        // 2. Bring up the massive Blue Card
+        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, autoAlpha: 0, ease: "power2.inOut", duration: 1.5 }, "+=0.3")
+        .to(".main-card", { y: 0, ease: "power3.inOut", duration: 1.5 }, "-=1.5")
+        
+        // 3. Expand the card to full screen
+        .to(".main-card", { width: "100vw", height: "100vh", borderRadius: "0px", ease: "power3.inOut", duration: 1 })
+        
+        // 4. Reveal the contents inside the blue card (iPhone mockup + text)
         .fromTo(".mockup-scroll-wrapper",
-          { y: 300, z: -500, rotationX: 50, rotationY: -30, autoAlpha: 0, scale: 0.6 },
-          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 2.5 }, "-=0.8"
+          { y: 200, z: -300, rotationX: 30, rotationY: -20, autoAlpha: 0, scale: 0.8 },
+          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1.5 }, "-=0.5"
         )
-        .fromTo(".phone-widget", { y: 40, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.15, ease: "back.out(1.2)", duration: 1.5 }, "-=1.5")
-        .to(".progress-ring", { strokeDashoffset: 60, duration: 2, ease: "power3.inOut" }, "-=1.2")
-        .to(".counter-val", { innerHTML: metricValue, snap: { innerHTML: 1 }, duration: 2, ease: "expo.out" }, "-=2.0")
-        .fromTo(".floating-badge", { y: 100, autoAlpha: 0, scale: 0.7, rotationZ: -10 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.5)", duration: 1.5, stagger: 0.2 }, "-=2.0")
-        .fromTo(".card-left-text", { x: -50, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power4.out", duration: 1.5 }, "-=1.5")
-        .fromTo(".card-right-text", { x: 50, autoAlpha: 0, scale: 0.8 }, { x: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1.5 }, "<")
-        .to({}, { duration: 1.5 }); // Hold at the end before unpinning
+        .fromTo(".phone-widget", { x: 50, autoAlpha: 0 }, { x: 0, autoAlpha: 1, stagger: 0.15, ease: "back.out(1.2)", duration: 1 }, "-=1")
+        .fromTo(".card-left-text", { x: -50, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power4.out", duration: 1 }, "-=1.5")
+        .fromTo(".card-right-text", { x: 50, autoAlpha: 0, scale: 0.8 }, { x: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1 }, "-=1")
+        .fromTo(".floating-badge", { y: 50, autoAlpha: 0, scale: 0.7 }, { y: 0, autoAlpha: 1, scale: 1, ease: "back.out(1.5)", duration: 1, stagger: 0.2 }, "-=1")
+        
+        // Hold for reading
+        .to({}, { duration: 1.5 });
 
     }, containerRef);
 
     return () => ctx.revert();
-  },[metricValue]); 
+  }, [metricValue]); 
 
   return (
     <div

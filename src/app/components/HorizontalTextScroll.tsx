@@ -56,7 +56,7 @@ export function HorizontalTextScroll() {
             className="w-screen h-full flex-shrink-0 flex flex-col items-center justify-center px-6 md:px-24"
           >
             <h2 
-               className="text-5xl md:text-7xl lg:text-[7rem] xl:text-[9rem] font-black text-gray-950 tracking-tight text-center leading-[1.05] max-w-7xl mx-auto"
+               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-950 tracking-tight text-center leading-[1.1] max-w-4xl mx-auto"
                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
               {text}

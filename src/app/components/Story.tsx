@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { Eye, Rocket } from "lucide-react";
 import { InteractiveImageAccordion } from "./ui/interactive-image-accordion";
+import { AnimatedFeatureSpotlight } from "./ui/feature-spotlight";
 
 const storyLines = [
   "We design digital experiences.",
@@ -83,39 +84,22 @@ export function Story() {
       </div>
 
       {/* Vision & Mission */}
-      <div className="max-w-6xl mx-auto px-6 mt-48 relative">
-        <div className="grid md:grid-cols-2 gap-16">
-          {[
-            {
-              icon: Eye,
-              title: "Our Vision",
-              description:
-                "To define the next era of digital architecture where every interaction feels ethereal, intuitive, and boundlessly scalable.",
-            },
-            {
-              icon: Rocket,
-              title: "Our Mission",
-              description:
-                "Empowering creators and enterprises with cutting-edge tools and design systems that transform complex problems into elegant digital solutions.",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-              className="space-y-5"
-            >
-              <item.icon size={22} className="text-gray-900" strokeWidth={1.5} />
-              <h3
-                className="text-2xl md:text-3xl font-black text-gray-950"
-              >
-                {item.title}
-              </h3>
-              <p className="text-gray-500 leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
+      <div className="max-w-6xl mx-auto px-6 mt-48 relative grid md:grid-cols-2 gap-8 items-stretch">
+        <AnimatedFeatureSpotlight
+          preheaderIcon={<Eye className="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-300" />}
+          preheaderText="Philosophy"
+          heading={<><span className="text-blue-600">Our</span> Vision</>}
+          description="To define the next era of digital architecture where every interaction feels ethereal, intuitive, and boundlessly scalable."
+          className="shadow-xl bg-white border-gray-100 flex flex-col h-full group hover:-translate-y-2 hover:shadow-[0_20px_60px_-15px_rgba(37,99,235,0.15)] hover:border-blue-100 transition-all duration-500 cursor-default"
+        />
+
+        <AnimatedFeatureSpotlight
+          preheaderIcon={<Rocket className="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-300" />}
+          preheaderText="Purpose"
+          heading={<><span className="text-blue-600">Our</span> Mission</>}
+          description="Empowering creators and enterprises with cutting-edge tools and design systems that transform complex problems into elegant digital solutions."
+          className="shadow-xl bg-white border-gray-100 flex flex-col h-full group hover:-translate-y-2 hover:shadow-[0_20px_60px_-15px_rgba(37,99,235,0.15)] hover:border-blue-100 transition-all duration-500 cursor-default"
+        />
       </div>
     </section>
   );
