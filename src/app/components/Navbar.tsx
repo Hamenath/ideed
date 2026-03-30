@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
+import { db } from "../lib/firebase";
+import { doc, updateDoc, increment } from "firebase/firestore";
 
 const navLinks = [
   { label: "Home", href: "home" },
@@ -41,6 +43,16 @@ export function Navbar() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleLogoClick = async () => {
+    scrollTo("home");
+    try {
+        const statsRef = doc(db, "stats", "counters");
+        await updateDoc(statsRef, { linkClicks: increment(1) });
+    } catch (e) {
+        console.error("Link click tracker error:", e);
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
@@ -59,7 +71,7 @@ export function Navbar() {
       >
         {/* Logo */}
         <button
-          onClick={() => scrollTo("home")}
+          onClick={handleLogoClick}
           className={`font-black text-gray-900 tracking-tight transition-all duration-300 ${
             scrolled ? "text-xl scale-95" : "text-3xl scale-100"
           }`}

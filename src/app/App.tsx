@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { db } from "./lib/firebase";
+import { doc, updateDoc, increment, setDoc, getDoc } from "firebase/firestore";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { HorizontalTextScroll } from "./components/HorizontalTextScroll";
@@ -26,6 +28,26 @@ const PORTFOLIO_IMAGES = {
 export default function App() {
   useEffect(() => {
     document.body.style.fontFamily = "Inter, sans-serif";
+
+    // Traffic Session Counter
+    const countVisit = async () => {
+      // Small session check to avoid counting refreshes in same tab session
+      if (!sessionStorage.getItem("visited")) {
+        try {
+          const statsRef = doc(db, "stats", "counters");
+          const snap = await getDoc(statsRef);
+          if (snap.exists()) {
+            await updateDoc(statsRef, { visits: increment(1) });
+          } else {
+            await setDoc(statsRef, { visits: 1 });
+          }
+          sessionStorage.setItem("visited", "true");
+        } catch (e) {
+          console.error("Traffic tracker error:", e);
+        }
+      }
+    };
+    countVisit();
   }, []);
 
   return (
